@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-012 · CC Switch：130万下载背后的转行程序员 | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-012</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-012 / 2026-02-28 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title"><span class="hl">CC Switch</span>：<br>130万下载背后<br>的转行程序员</h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>Jason</span> · CC Switch作者 / 36岁转行开发者</div>
+            <div class="hero-meta">主持 <span>向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第12期 · 2026.02.28</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>转行的起点：痛点即产品</h2>
+        </div>
+        <p>Jason 之前做进出口贸易，36 岁才开始自学编程。从 TypeScript 到 React、Node.js、Rust，他用三个月学完了基础知识，然后做出了第一个正式项目——CC Switch。</p>
+
+        <p>他做 CC Switch 的起点很简单：他自己就是 Claude Code 的重度用户，但国内订阅官方渠道困难，大家普遍使用中转站或国产模型（DeepSeek、Kimi、MiniMax）。每次切换供应商都要手动改环境变量或配置文件，繁琐且容易出错。</p>
+
+        <div class="data-block" data-coord="PROJECT-STATS">
+            <p><strong>CC Switch 数据（截至2026年2月）</strong></p>
+            <p>GitHub Stars: <strong>20,000+</strong></p>
+            <p>下载量: <strong>130万次</strong></p>
+            <p style="margin-bottom:0">开发周期: 2024年7月至今（约6个月出首版）</p>
+        </div>
+
+        <h3>产品的设计哲学</h3>
+        <p>CC Switch 从第一天起就想清楚了三件事：<span class="hl-yellow">侵入性最小</span>（卸载不影响 CC 的正常使用）、<span class="hl-yellow">操作极简</span>（任何改动都不改变核心体验）、<span class="hl-yellow">安全可靠</span>（处理 API key 的软件，安全怎么做都不过分）。</p>
+
+        <div class="quote">
+            "CC Switch 的口号是：你只需要填写一个 key，就可以把任何 API 导入到 Claude Code 里面。切换供应商只需要一次点击。"
+            <div class="quote-author">— Jason，CC Switch 作者</div>
+        </div>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>技术架构的两次重构</h2>
+        </div>
+        <p>从最初的「玩具」到现在的「产品」，CC Switch 经历了两次重大的技术架构重构。这不是因为第一次做错了，而是因为用户量增长后，原有的设计撑不住了。</p>
+
+        <h3>第一次重构：配置管理</h3>
+        <p>早期的 CC Switch 配置管理很简单，但随着支持的 API 越来越多，配置文件的结构开始变得复杂。Jason 付出了不少「血泪教训」才把配置管理做得足够健壮。</p>
+
+        <h3>代码是债务，不是资产</h3>
+        <p>Jason 的一个核心理念是：<span class="hl-yellow">代码不是资产，是债务</span>。每一行代码都需要维护。功能堆得越多，维护成本越高。这也是为什么 CC Switch 一直保持克制——只做一件事，把这件事做到极致。</p>
+
+        <div class="golden-quote">
+            "很多人说我这个项目是 Vibe Coding 出来的，但我自己从不说这个词。语言会影响你自己，说出那个词容易让你放松对代码质量的要求。"
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>AI 编程的实战技巧</h2>
+        </div>
+        <p>Jason 整理了他在用 AI 编程过程中沉淀出的实战方法论：</p>
+
+        <h3>① 用对的模型</h3>
+        <p>不同任务用不同模型。架构设计、复杂逻辑用顶级模型；简单功能、样板代码用便宜快速的模型。不要用一把锤子解决所有问题。</p>
+
+        <h3>② Plan Mode 是关键</h3>
+        <p>在动手写代码之前，先让 AI 写出详细的实现方案。这一步很多人跳过了，但它能节省大量返工时间。</p>
+
+        <h3>③ 上下文管理是核心</h3>
+        <p>AI 编程中最容易被忽略的问题是上下文管理。上下文越长，AI 越容易「跑偏」。<span class="hl-yellow">保持上下文的简洁和聚焦，比提供更多信息更重要</span>。</p>
+
+        <h3>④ 控制代码量</h3>
+        <p>写代码容易，但维护代码难。每增加一个功能，都要问自己：这真的有必要吗？「克制」是 Jason 在这个项目中学到的最重要的课。</p>
+
+        <h3>⑤ 及时清理技术债</h3>
+        <p>AI 写出来的代码往往能用但不够优雅。技术债要及时清理，否则会越积越多，最终拖垮项目。</p>
+
+        <div class="data-block" data-coord="AI-CODING-TIPS">
+            <p>⑥ <strong>做好架构设计</strong>：AI 可以帮你写代码，但架构决策必须是人做的。</p>
+            <p style="margin-bottom:0">⑦ <strong>必须使用 Git</strong>：AI 编程中随时可能「翻车」，Git 是你的安全网。</p>
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>增长的秘密：开源的力量</h2>
+        </div>
+        <p>CC Switch 的增长没有任何营销预算，完全靠开源社区的自发传播。130万次下载，来自一个人，靠的是产品本身的口碑。</p>
+
+        <h3>为什么开源？</h3>
+        <p>Jason 选择开源不是因为「理念」，而是因为<span class="hl-yellow">开源是工具类项目最有效的增长策略</span>。用户信任开源——他们可以看到代码，知道里面没有后门，这对一个处理 API key 的工具来说尤为重要。</p>
+
+        <h3>那道双重彩虹</h3>
+        <p>项目某天突然在 Twitter/X 上爆火，Jason 形容那个时刻就像看到了双重彩虹——美好、意外、有点不真实。那次爆发为 CC Switch 带来了数以万计的新用户，GitHub Star 数量在一周内翻倍。</p>
+
+        <div class="quote">
+            "我做这个项目的初心很简单：做出一个让自己满意的项目，证明自己，让这段转行的路没有失败。"
+            <div class="quote-author">— Jason</div>
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">10</span>
+        </div>
+        <ul>
+            <li><span class="label">产品</span>CC Switch 核心：填一个 key，一键切换 AI 供应商，侵入性最小</li>
+            <li><span class="label">原则</span>代码是债务不是资产——每一行都需要维护，克制是最重要的工程品质</li>
+            <li><span class="label">语言</span>不说「Vibe Coding」：语言影响你的标准，随便的词让你放松对质量的要求</li>
+            <li><span class="label">AI编程</span>Plan Mode 先行：动手写代码前让 AI 写实现方案，节省大量返工</li>
+            <li><span class="label">上下文</span>AI 编程中上下文管理比提供更多信息更重要——保持简洁和聚焦</li>
+            <li><span class="label">增长</span>工具类产品开源是最有效增长策略：透明建立信任，口碑驱动传播</li>
+            <li><span class="label">转行</span>36岁进出口贸易转行，3个月学完基础，6个月做出130万下载的产品</li>
+            <li><span class="label">架构</span>架构决策必须是人做的，AI 只能帮你实现——不要把架构判断外包给 AI</li>
+            <li><span class="label">技术债</span>AI 写的代码能用但不优雅，及时清理技术债否则会越积越多</li>
+            <li><span class="label">初心</span>做出让自己满意的项目，证明自己——这个简单的出发点支撑了整个旅程</li>
+        </ul>
+    </div>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>给转行者的建议</h2>
+        </div>
+        <p>作为一个成功转行的程序员，Jason 对有意向转行或副业开发的人有一些实在的建议：</p>
+
+        <h3>从自己的真实痛点出发</h3>
+        <p>最好的产品灵感来自你自己真实的需求，不是凭空想象出来的「用户需求」。CC Switch 是因为 Jason 自己每天都在用 Claude Code，切换 API 很烦，所以才做出来的。</p>
+
+        <h3>未来的选择</h3>
+        <p>Jason 坦言，他对未来还没有固定的规划。但他知道一件事：<span class="hl-yellow">在 AI 时代，一个人加上合适的工具，可以做到以前需要整个团队才能完成的事</span>。这是他选择继续在这条路上走下去的底气。</p>
+    </section>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第12期：Claude Code最佳搭档CC Switch背后的故事」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn/wiki/RFwgw95g8i4B8AkZ3n1caegznph">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-012<br>
+            2026-02-28<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

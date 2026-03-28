@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-011 · AI美学的边界：汗青与虚拟歌手 Yuri | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-011</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-011 / 2026-01-31 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title">AI美学的边界：<br>汗青与虚拟歌手<br><span class="hl">Yuri</span></h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>汗青</span> · AI.TALK创始人 / AI歌手Yuri构建者</div>
+            <div class="hero-meta">主持 <span>向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第11期 · 2026.01.31</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>不做清单的创作原则</h2>
+        </div>
+        <p>汗青是一个有意识地「不列清单」的创作者。他认为，清单是对未来的预设，而真正的创作需要对当下保持开放——那些最有价值的东西，往往出现在计划之外。</p>
+
+        <p>这种创作哲学直接体现在他构建 Yuri 的过程中：没有从一开始就锁定 Yuri 的形态，而是在持续的实验和反馈中，让 Yuri 的轮廓逐渐清晰。</p>
+
+        <div class="quote">
+            "我不做清单，因为清单会限制你。你提前想好的那些事，往往不是最重要的事。最重要的事，是你在做的过程中发现的。"
+            <div class="quote-author">— 汗青，AI.TALK创始人</div>
+        </div>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>虚拟人构建的难点：Yuri 的诞生</h2>
+        </div>
+        <p>Yuri 是汗青用 AI 技术打造的虚拟歌手。这不是一个简单的 TTS 项目，而是一个需要在声音、形象、性格、创作风格等多个维度上达到高度一致性的系统工程。</p>
+
+        <h3>最难的部分：一致性</h3>
+        <p>单独看，AI 生成的声音可以很好听，AI 生成的图像可以很好看。但让一个虚拟人在所有媒介上保持「同一个人」的感觉，这才是真正的难题。<span class="hl-yellow">Yuri 的核心挑战是跨媒介的人格一致性</span>。</p>
+
+        <h3>技术实现 vs 艺术表达</h3>
+        <p>汗青面临的一个根本性张力是：技术工具在快速进化，而艺术表达需要稳定性。如何在不断更新迭代的技术条件下，维持 Yuri 这个「人」的连续性？这是一个没有标准答案的问题。</p>
+
+        <div class="data-block" data-coord="YURI-SPEC">
+            <p><strong>Yuri 的构成维度：</strong></p>
+            <p>声音 · 视觉形象 · 性格设定 · 创作风格 · 粉丝关系</p>
+            <p style="margin-bottom:0">每个维度单独做都不难，难的是让它们在一个统一的「Yuri」下协同共振。</p>
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>冷门与主流的对抗</h2>
+        </div>
+        <p>汗青的创作有一种刻意的「冷门感」。他不追主流审美，甚至在某种程度上，他的选择是逆着大众品味走的。</p>
+
+        <h3>为什么选择冷门？</h3>
+        <p>主流审美是一条拥挤的赛道。在那条赛道上，资源最多的玩家总是赢家。但在一条少人走的路上，你的独特视角本身就是壁垒。</p>
+
+        <p>汗青认为，<span class="hl-yellow">AI 放大了人的审美能力，也放大了人的审美局限</span>。如果创作者本身没有独特的品味，AI 只会帮你更高效地生产平庸。</p>
+
+        <div class="golden-quote">
+            "AI 是个放大器。你有品味，AI 帮你实现；你没品味，AI 帮你批量制造垃圾。"
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>AI 审美在商业中的哲学困境</h2>
+        </div>
+        <p>汗青坦诚地分享了他面临的一个核心困境：他的审美追求和商业现实之间的张力。</p>
+
+        <h3>市场要的和你做的不一样</h3>
+        <p>受众喜欢什么和创作者想做什么，往往存在巨大的落差。对汗青来说，妥协是有代价的——一旦你开始为流量而创作，你的作品就已经变了。</p>
+
+        <h3>内卷与壁垒</h3>
+        <p>在 AI 内容泛滥的时代，真正的壁垒不在于技术，而在于<span class="hl-yellow">审美的独特性和创作者的「灵魂」</span>。这个东西是无法被工具复制的，也是无法被内卷掉的。</p>
+
+        <div class="quote">
+            "当每个人都能用同样的工具做同样的事，你的差异化只剩下你这个人本身。"
+            <div class="quote-author">— 汗青</div>
+        </div>
+    </section>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>终极追问：人类的核心不可替代性</h2>
+        </div>
+        <p>本期的收尾落在了一个所有人都无法回避的问题上：当 AI 能做绝大多数创意工作的时候，人类的核心价值是什么？</p>
+
+        <h3>汗青的答案</h3>
+        <p>汗青认为，人类的不可替代性不在于「能做什么」，而在于「为什么做」。AI 可以模仿风格，可以生成内容，但它没有动机、没有渴望、没有对「意义」的追求。</p>
+
+        <p>创作中那种「非做不可」的冲动，那种对某个美学时刻的执念，那种愿意为了一首歌的某个小节反复打磨的偏执——这是人类特有的，也是AI目前无法真正复制的。</p>
+
+        <div class="golden-quote">
+            "AI 创作缺少的不是技术，而是那种非做不可的执念——那个问'为什么'的人。"
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">9</span>
+        </div>
+        <ul>
+            <li><span class="label">哲学</span>不列清单的创作原则：最重要的东西往往出现在计划之外</li>
+            <li><span class="label">技术</span>虚拟人的核心难题不是单点技术，而是跨媒介的人格一致性</li>
+            <li><span class="label">审美</span>AI 是放大器：有品味帮你实现，没品味帮你批量制造平庸</li>
+            <li><span class="label">策略</span>冷门赛道的独特视角本身就是壁垒，主流审美资源永远倾向头部</li>
+            <li><span class="label">商业</span>为流量妥协的那一刻，作品已经变了——创作者的灵魂是真正的护城河</li>
+            <li><span class="label">壁垒</span>AI 内容泛滥时代，审美独特性和创作者本身的差异无法被工具复制</li>
+            <li><span class="label">人类</span>人类不可替代的是「为什么做」，不是「能做什么」</li>
+            <li><span class="label">执念</span>那种非做不可的冲动、对美学时刻的执念，是 AI 无法复制的</li>
+            <li><span class="label">未来</span>当每个人都用同样工具，你的差异化只剩下你这个人本身</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第11期：聊聊Yuri，聊聊审美和哲学对AI创作」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn/wiki/CZvpwPKBLidSrTkNffgc1LnfnOc">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-011<br>
+            2026-01-31<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
