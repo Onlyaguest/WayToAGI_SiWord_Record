@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未来硅世界 — 通学内容站</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid-line: rgba(45,41,38,0.08);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.4);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Blueprint grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── HEADER ── */
+        header {
+            padding: 60px 0 0;
+            position: relative;
+        }
+        .coord-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .site-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            line-height: 0.92;
+            letter-spacing: -3px;
+            position: relative;
+        }
+        .site-title .highlight-bar {
+            display: inline-block;
+            background: var(--yellow);
+            padding: 0 6px;
+            transform: rotate(-0.5deg);
+        }
+        .header-meta {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--ink);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .site-desc {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--dim);
+            text-transform: uppercase;
+            line-height: 1.8;
+        }
+        .status-pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            background: var(--pink);
+            color: #fff;
+            padding: 5px 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 48px 0 24px;
+        }
+        .section-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 3px 8px;
+        }
+        .section-label {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--ink);
+            opacity: 0.15;
+        }
+
+        /* ── EPISODE CARDS ── */
+        .episode-list { display: flex; flex-direction: column; gap: 0; }
+
+        .episode-card {
+            display: grid;
+            grid-template-columns: 56px 1fr auto;
+            gap: 0;
+            border-bottom: 1px solid rgba(45,41,38,0.15);
+            text-decoration: none;
+            color: var(--ink);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .episode-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: var(--pink);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.25s ease;
+        }
+        .episode-card:hover::before { transform: scaleY(1); }
+        .episode-card:hover { background: rgba(255,242,0,0.06); }
+
+        .ep-num-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+            border-right: 1px solid rgba(45,41,38,0.1);
+        }
+        .ep-num {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--ink);
+            opacity: 0.15;
+        }
+        .ep-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--dim);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .ep-body { padding: 24px 20px; }
+        .ep-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+        .ep-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .ep-summary {
+            font-size: 0.9rem;
+            color: rgba(45,41,38,0.7);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .golden-strip {
+            background: var(--ink);
+            color: var(--yellow);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 8px 14px;
+            display: inline-block;
+            margin-bottom: 12px;
+            max-width: 100%;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(45,41,38,0.3);
+            padding: 3px 9px;
+            color: var(--dim);
+            transition: all 0.15s;
+        }
+        .tag.accent { border-color: var(--pink); color: var(--pink); }
+        .episode-card:hover .tag { border-color: var(--ink); color: var(--ink); }
+
+        .ep-arrow-col {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            color: rgba(45,41,38,0.2);
+            transition: all 0.2s;
+        }
+        .episode-card:hover .ep-arrow-col {
+            color: var(--pink);
+            transform: translateX(4px);
+        }
+
+        /* Latest badge */
+        .badge-latest {
+            position: absolute;
+            top: 20px; right: 60px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            background: var(--pink);
+            color: #fff;
+            padding: 3px 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 80px;
+            padding: 30px 0 50px;
+            border-top: 1px solid rgba(45,41,38,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        footer span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .barcode {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 7px;
+            color: rgba(45,41,38,0.15);
+            letter-spacing: 4px;
+        }
+
+        /* ── ENTRANCE ANIMATION ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .site-title { animation: fadeUp 0.6s ease both; }
+        .header-meta { animation: fadeUp 0.6s 0.1s ease both; }
+        .section-header { animation: fadeUp 0.5s 0.2s ease both; }
+        .episode-card { animation: fadeUp 0.5s ease both; }
+        .episode-card:nth-child(1) { animation-delay: 0.25s; }
+        .episode-card:nth-child(2) { animation-delay: 0.35s; }
+        .episode-card:nth-child(3) { animation-delay: 0.45s; }
+
+        @media (max-width: 600px) {
+            .episode-card { grid-template-columns: 44px 1fr 32px; }
+            .ep-arrow-col { padding: 0 10px; }
+            .badge-latest { display: none; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <span class="coord-tag">SYS-00 / INDEX / WLGSJ-TONXUE-STATION</span>
+        <h1 class="site-title">
+            未来<span class="highlight-bar">硅</span>世界
+        </h1>
+        <div class="header-meta">
+            <div class="site-desc">
+                每期直播精华整理 · 金句 · 深度解析<br>
+                LIVE TRANSCRIPT → STRUCTURED KNOWLEDGE
+            </div>
+            <div class="status-pill">● LIVE UPDATING</div>
+        </div>
+    </header>
+
+    <div class="section-header">
+        <span class="section-coord">MOD-A01</span>
+        <span class="section-label">全部期数 · All Episodes</span>
+        <div class="section-line"></div>
+    </div>
+
+    <div class="episode-list">
+
+        <a class="episode-card" href="ep013.html">
+            <div class="ep-num-col">
+                <div class="ep-num">13</div>
+                <div class="ep-coord">EP-013</div>
+            </div>
+            <div class="ep-body">
+                <div class="ep-title">从创意到推广：Happycapy 创始人的心路历程</div>
+                <div class="ep-meta">2026-03-28 &nbsp;·&nbsp; GUEST: JAROD &nbsp;·&nbsp; HAPPYCAPY</div>
+                <div class="ep-summary">深度拆解 Happycapy 从 0 到 1 的产品构思与市场路径。2周出 MVP、AI 原生工作文化、ProductHunt 冷启动，每一个话题都干货满满。</div>
+                <div class="golden-strip">"Claude Code 是给 power user 的，Happycapy 是给 intermediate user 的。"</div>
+                <div class="tags">
+                    <span class="tag accent">产品</span>
+                    <span class="tag">AI原生</span>
+                    <span class="tag">创业</span>
+                    <span class="tag">Claude Code</span>
+                    <span class="tag">ProductHunt</span>
+                </div>
+            </div>
+            <div class="ep-arrow-col">→</div>
+            <span class="badge-latest">LATEST</span>
+        </a>
+
+        <!-- 后续期数追加此处 -->
+
+    </div>
+
+    <footer>
+        <span>未来硅世界 · WEILAI GUISHIJIE</span>
+        <span class="barcode">||| || ||| | || ||| || | ||| || ||| | || |||</span>
+        <span>TONXUE-STA v1.0</span>
+    </footer>
+
+</div>
+</body>
+</html>
