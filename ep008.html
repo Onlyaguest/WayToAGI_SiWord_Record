@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-008 · 科技革新这两年：AI 工具全景回顾 | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-008</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-008 / 2025-12-20 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title"><span class="hl">科技革新这两年</span>：<br>AI 工具全景回顾</h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>祥叔</span> · 续前期</div>
+            <div class="hero-meta">嘉宾 <span>向阳乔木 / 尼克西</span></div>
+            <div class="hero-meta">主持 <span>向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第8期 · 2025.12.20</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>破冰与感悟：这两年，AI到底经历了什么？</h2>
+        </div>
+        <p>承接上一期，祥叔意犹未尽，主持团再度邀请他回来，这次聚焦在一个更具体的问题上：<span class="hl-yellow">过去两年，AI到底发生了什么？</span>作为一个亲历者，祥叔从「看热闹」到「用起来」再到「系统性依赖」，他的完整转变路径是一个很好的样本。</p>
+
+        <p>最大的认知转折点，他说得很直接：当AI开始帮他完成他「以为只有自己能做」的事，他对AI的认知就彻底改变了。那不是一个渐进的过程，而是一个瞬间的认知断层。</p>
+
+        <div class="data-block" data-coord="AI进化时间线">
+            <p><strong>两年AI进化时间线</strong></p>
+            <p>2023 → <strong>GPT时代</strong>：ChatGPT爆发，大众第一次真正感知到大模型的能力</p>
+            <p>2024 → <strong>多模型竞争</strong>：Claude / Gemini崛起，生态开始多元化</p>
+            <p style="margin-bottom:0">2025 → <strong>Agent + 多模态全面落地</strong>：工具从「聊天」变成「干活」</p>
+        </div>
+
+        <p>这条时间线不只是技术史，也是每一个AI用户的认知升级史。2023年的震惊，2024年的选择，2025年的依赖——这个节奏在几乎所有早期采纳者身上都能看到。</p>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>实战技巧：这些工具，这样用才对</h2>
+        </div>
+        <p>向阳乔木分享了他的AI工具栈是如何建立的。他的核心原则出乎意料地简单：<span class="hl-yellow">不追新工具，而是找到对自己最高效的工具组合</span>。</p>
+
+        <p>这个反直觉的立场背后有清晰的逻辑：每一个新工具都有学习成本，有迁移成本，有心智占用成本。工具不是越多越好，而是要找到每个工具的「甜蜜点」——在某个特定场景下，它比其他任何工具都更顺手。</p>
+
+        <div class="quote">
+            "我用的工具其实不多，但我把我用的几个工具用得很深。"
+            <div class="quote-author">— 向阳乔木</div>
+        </div>
+
+        <p>「用得深」意味着什么？意味着你理解这个工具的边界，知道它在什么情况下会失效，知道怎么构建prompt让它输出最好的结果，知道它的输出什么时候需要人工干预。</p>
+
+        <div class="data-block" data-coord="工具使用原则">
+            <p><strong>AI工具使用的四条原则</strong></p>
+            <p>① <strong>场景优先</strong>：先有真实需求，再选工具——不要为了用工具而用工具</p>
+            <p>② <strong>深度优于广度</strong>：把少数工具用透，比浅尝多个工具更有价值</p>
+            <p>③ <strong>建立个人工具栈</strong>：你的工具组合应该反映你的工作场景，不是别人的推荐</p>
+            <p style="margin-bottom:0">④ <strong>定期清理冗余工具</strong>：每隔一段时间重新审视，去掉那些「装了但没用」的工具</p>
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>评价与推荐：2025年的必备 AI 工具</h2>
+        </div>
+        <p>主持团做了一轮实际工具推荐，按使用场景分类梳理。这不是测评，而是基于真实高频使用后的经验沉淀。</p>
+
+        <h3>写作 / 思维</h3>
+        <p><span class="hl-yellow">Claude</span>（长文和深度推理）/ <span class="hl-yellow">ChatGPT</span>（创意和对话）——两者各有所长，不是竞争关系，而是互补关系。深度分析和长文写作首选Claude；开放式探索和创意头脑风暴ChatGPT更灵活。</p>
+
+        <h3>搜索 / 研究</h3>
+        <p><span class="hl-yellow">Perplexity</span>（实时搜索，带来源）/ <span class="hl-yellow">NotebookLM</span>（文档研究，处理大量资料）——两个工具解决的是不同维度的信息需求：一个是实时的，一个是深度的。</p>
+
+        <h3>编程</h3>
+        <p><span class="hl-yellow">Claude Code</span> / <span class="hl-yellow">Cursor</span>——代码编写领域目前最强的两个选择，根据工作流偏好选择。</p>
+
+        <h3>视觉</h3>
+        <p><span class="hl-yellow">Midjourney / Flux</span>（图像生成）/ <span class="hl-yellow">Sora / Runway</span>（视频生成）——视觉工具迭代最快，但这几个工具在各自赛道仍然是首选。</p>
+
+        <p>尼克西给出了一个简洁的使用框架：<strong>高频工具要用得深，低频工具要找得到</strong>。不是所有工具都需要精通，但你需要知道在特定需求出现时，去哪里找到合适的工具。</p>
+
+        <div class="golden-quote">
+            AI工具的本质是放大器——放大你已有的能力。你擅长写作，AI让你写得更快更好；你不擅长，AI只会帮你更快地生产平庸。
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>深挖：近两年AI进化的隐藏真相</h2>
+        </div>
+        <p>这是本期最有价值的部分——发布会上的数字人人都知道，但有些变化是隐藏在热闹背后的。</p>
+
+        <h3>不只是模型变强了</h3>
+        <p>整个AI生态系统的配套设施在成熟：<span class="hl-yellow">API成本大幅下降</span>，让AI应用开发的门槛降到了个人开发者可以轻松触达的水平。两年前需要几万美元的计算成本，现在几十美元就能解决。</p>
+
+        <h3>最被低估的变化</h3>
+        <p>AI对「普通用户」的友好度大幅提升。早期的AI工具，没有一定的技术背景很难用好。现在，<span class="hl-yellow">会说话就能用AI</span>——这个门槛的降低，才是两年来最大的结构性变化。</p>
+
+        <p>这意味着AI能力的扩散速度比所有人预期的都快。不再是程序员、研究员的专属工具，而是真正意义上的大众工具。</p>
+
+        <div class="golden-quote">
+            过去两年AI最大的进步，不是那些发布会上的数字，而是「普通人也能用起来」这件事正在真正发生。
+        </div>
+    </section>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>展望：2026 年，我们期待什么？</h2>
+        </div>
+        <p>录制这期节目时，2025年还没结束。但嘉宾们已经在展望2026年的图景——不是预测，而是基于当前趋势的合理推断。</p>
+
+        <h3>祥叔：Agent自主工作流的普及</h3>
+        <p>AI开始真正「帮你干活」而不只是「给你答案」。<span class="hl-yellow">Agent</span>的核心变化是：从你主动问，变成AI主动做。这个转变一旦普及，人机协作的模式会发生根本性的改变。</p>
+
+        <h3>向阳乔木：AI原生应用的爆发</h3>
+        <p>那些从设计之初就专为AI时代设计的产品，而不是在传统产品上「加AI功能」。<span class="hl-yellow">AI原生应用</span>会有完全不同的产品逻辑和用户体验，这个品类的爆发会重新定义很多行业。</p>
+
+        <h3>尼克西：人机协作模式的标准化</h3>
+        <p>怎么和AI分工合作，会逐渐形成更好的默契和范式。<span class="hl-yellow">人机协作的最佳实践</span>会从少数先行者的经验，变成可以被大多数人学习和复制的标准模式。</p>
+
+        <div class="data-block" data-coord="2026展望">
+            <p><strong>四个值得关注的趋势</strong></p>
+            <p>① <strong>Agent普及</strong>：AI从「回答」到「执行」，自主工作流成为主流</p>
+            <p>② <strong>AI原生应用爆发</strong>：专为AI时代设计的产品重新定义各行业</p>
+            <p>③ <strong>人机协作模式成熟</strong>：最佳实践从个人经验变成可复制的标准</p>
+            <p style="margin-bottom:0">④ <strong>个人AI助手成为标配</strong>：每个人都有自己定制的AI工作流</p>
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">10</span>
+        </div>
+        <ul>
+            <li><span class="label">回顾</span>两年时间线：2023 GPT冲击 → 2024 多模型竞争 → 2025 Agent+多模态全面落地</li>
+            <li><span class="label">转折</span>认知转折：当AI帮你完成「以为只有自己能做」的事，你对AI的认知就彻底改变了</li>
+            <li><span class="label">原则</span>工具使用原则：场景优先，不追新工具，深度优于广度，建立个人工具栈</li>
+            <li><span class="label">推荐</span>高频必备：Claude（深度推理）/ ChatGPT（创意对话）/ Perplexity（实时搜索）</li>
+            <li><span class="label">放大器</span>AI工具是放大器——放大你已有的能力，不创造你没有的能力</li>
+            <li><span class="label">隐藏真相</span>最大进步不是模型数字，而是「普通人也能用起来」正在真正发生</li>
+            <li><span class="label">成本</span>API成本大幅下降，AI应用开发门槛降低，每个人都可以构建自己的AI工作流</li>
+            <li><span class="label">尼克西</span>工具分级：高频工具用得深，低频工具找得到——简洁明了的原则</li>
+            <li><span class="label">展望</span>2026：Agent自主工作流普及 / AI原生应用爆发 / 人机协作模式标准化</li>
+            <li><span class="label">行动</span>建立你自己的AI工具栈——不是跟风，而是基于你自己的工作场景精心选择</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第八期：科技革新这两年」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-008<br>
+            2025-12-20<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
