@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-004 · AI Agent 时代，搜索不再为人而生 | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-004</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-004 / 2025-10-11 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title"><span class="hl">AI Agent</span> 时代，<br>搜索不再<br>为人而生</h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>郭耕良 / 杨政骥</span> · 小宿科技 / AI Agent搜索引擎</div>
+            <div class="hero-meta">主持 <span>许键 / 向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第4期 · 2025.10.11</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>小宿科技是什么？</h2>
+        </div>
+        <p>小宿科技不只做AI搜索，更准确的定义是：<span class="hl-yellow">专为AI Agent设计的搜索引擎</span>。这个定位上的区别，决定了产品的一切设计决策。</p>
+
+        <p>传统搜索引擎的用户是人类，搜索结果要"对人可读"——排版好看、摘要清晰、链接易于点击。而小宿的目标用户是AI Agent，结果要"对机器可用"——结构化、可靠、能被Agent的工作流直接消费，不需要人类在中间再做理解和转化。</p>
+
+        <div class="data-block" data-coord="COMPANY-PROFILE">
+            <p><strong>小宿科技</strong> · AI Agent搜索引擎</p>
+            <p>专为AI Agent提供结构化、可用的搜索结果</p>
+            <p style="margin-bottom:0">聚焦Agent工作流中的信息检索环节 · 嘉宾：郭耕良 / 杨政骥</p>
+        </div>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>搜索正在经历一场根本性的范式转移</h2>
+        </div>
+        <p>过去三十年，搜索引擎的底层逻辑没有变过：人输入关键词，引擎返回一个链接列表，人再去阅读和消化。整个流程的起点和终点都是人类认知。</p>
+
+        <p>但在AI Agent驱动的工作流中，这个流程发生了根本性的改变：Agent提出任务目标，搜索引擎需要返回<span class="hl-yellow">结构化数据</span>，Agent直接使用这些数据继续下一步。人类完全不在这个循环里。</p>
+
+        <p>这不是搜索能力的升级，而是<span class="hl-yellow">搜索服务对象的根本改变</span>。为人设计的搜索和为Agent设计的搜索，从架构到评估标准都截然不同。</p>
+
+        <div class="golden-quote">
+            过去的搜索引擎是为人的眼睛设计的，未来的搜索引擎是为Agent的任务设计的。
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>Agent 搜索的技术挑战</h2>
+        </div>
+        <p>为AI Agent做搜索，面临的技术挑战和为人类做搜索完全不同。人类可以用常识判断一个差的搜索结果并重新搜索，但Agent不能——一个不稳定的搜索结果会直接破坏整个工作流。</p>
+
+        <h3>可靠性：Agent不容错</h3>
+        <p>人类使用搜索时，可以识别并忽略一个糟糕的结果，换个关键词再试。但嵌入Agent工作流的搜索，一旦返回错误或不稳定的数据，整个自动化流程就会出问题。<span class="hl-yellow">可靠性是Agent搜索的第一要求</span>，不是加分项。</p>
+
+        <h3>结构化：机器直接消费</h3>
+        <p>传统搜索结果是为人类视觉设计的HTML页面。Agent需要的是高度结构化的数据——干净的字段、明确的格式、可被程序直接解析的输出，而不是需要二次解析的网页内容。</p>
+
+        <h3>实时性：任务驱动的时效要求</h3>
+        <p>Agent执行的任务往往对信息时效性要求极高。一个处理实时市场信息的Agent，如果搜索结果延迟几小时，整个任务的价值就会大打折扣。</p>
+
+        <div class="data-block" data-coord="TECH-CHALLENGES">
+            <p><strong>三大核心挑战</strong></p>
+            <p>① <strong>可靠性</strong>：Agent不容错，搜索结果的不稳定直接破坏工作流</p>
+            <p>② <strong>结构化</strong>：机器直接消费，不需要人类在中间转化</p>
+            <p style="margin-bottom:0">③ <strong>实时性</strong>：任务驱动，时效性要求极高</p>
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>商业模式与行业格局</h2>
+        </div>
+        <p>Agent基础设施的商业机会天然是<span class="hl-yellow">API优先、面向开发者</span>的路径。小宿的客户不是普通用户，而是在构建AI原生应用的开发者和团队。他们需要的是稳定、可靠、有保障的搜索基础设施。</p>
+
+        <p>小宿与传统搜索引擎（Google、Bing等）的关系是互补而非竞争。传统搜索引擎服务的是人类的信息需求，小宿专注服务AI原生应用中的机器信息需求。两者面向的是完全不同的使用场景和客户群体。</p>
+
+        <div class="quote">
+            "我们不是要做下一个Google，我们是在为AI Agent的时代打地基。"
+            <div class="quote-author">— 郭耕良 / 杨政骥，小宿科技</div>
+        </div>
+    </section>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>给开发者和创业者的洞察</h2>
+        </div>
+        <p>AI Agent时代带来的不只是应用层的机会，更是整个<span class="hl-yellow">基础设施层的重建机会</span>。每一个在人类互联网时代建立起来的基础设施——搜索、存储、计算、身份验证——在Agent时代都需要被重新设计。</p>
+
+        <p>对创业者来说，机会在于：找到AI工作流中的瓶颈节点，提供专业化的解决方案。不需要做一个大而全的平台，专注解决一个具体环节的具体问题，把它做到极致，就能建立足够深的护城河。</p>
+
+        <p>小宿的故事说明：<span class="hl-yellow">AI Agent能干多少事，取决于它能调用多少可靠的工具</span>。搜索只是其中一块，但每一块基础设施都是Agent能力的组成部分——也都是一个创业机会。</p>
+
+        <div class="golden-quote">
+            AI Agent能干多少事，取决于它能调用多少可靠的工具。搜索只是其中一块，但每一块都很关键。
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">9</span>
+        </div>
+        <ul>
+            <li><span class="label">定义</span>小宿科技：专为AI Agent设计的搜索引擎——服务对象是机器，不是人</li>
+            <li><span class="label">范式</span>搜索正在经历范式转移：从「人可读链接列表」→「Agent可用结构化数据」</li>
+            <li><span class="label">挑战</span>Agent搜索三大技术挑战：可靠性 / 结构化 / 实时性</li>
+            <li><span class="label">机会</span>AI Agent基础设施是下一轮创业机会的核心方向</li>
+            <li><span class="label">产品</span>AI原生产品要从设计之初就考虑：哪些工作流环节需要专门的基础设施？</li>
+            <li><span class="label">商业</span>API优先、面向开发者是Agent基础设施的天然商业路径</li>
+            <li><span class="label">格局</span>小宿与Google是互补关系：Google服务人类搜索，小宿服务Agent任务</li>
+            <li><span class="label">洞察</span>AI能干多少事，取决于它能调用多少可靠工具——基础设施就是Agent的能力上限</li>
+            <li><span class="label">行动</span>找到AI工作流中的瓶颈节点，提供专业化解决方案——这就是创业者的机会</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第四期：AI Agent时代，搜索不再为人而生」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-004<br>
+            2025-10-11<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
