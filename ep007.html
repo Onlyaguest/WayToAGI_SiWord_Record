@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-007 · 教育+AI：聊不尽的教育 | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-007</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-007 / 2025-12-06 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title"><span class="hl">教育+AI</span>：<br>聊不尽的教育</h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>祥叔</span> · AI探索者</div>
+            <div class="hero-meta">嘉宾 <span>七娘</span> · 教育领域实践者</div>
+            <div class="hero-meta">主持 <span>向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第7期 · 2025.12.06</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>时代变局中的教育核心价值</h2>
+        </div>
+        <p>AI时代到来，什么能力最不可替代？这是本期的核心问题。当大模型已经能写作、能推理、能编程，当孩子们从小就浸泡在AI工具里——我们到底应该培养什么？</p>
+
+        <p>祥叔提出：<span class="hl-yellow">能力定义需要在AI背景下重新审视</span>——那些「越早学越有优势」的东西发生了变化。很多我们认为重要的技能（背知识点、熟练计算、快速检索），在AI面前已经不再稀缺。</p>
+
+        <div class="data-block" data-coord="三大议题">
+            <p><strong>本期讨论框架</strong></p>
+            <p>① <strong>能力定义</strong>：AI时代最有价值的是什么</p>
+            <p>② <strong>环境判断</strong>：传统教育是否失效</p>
+            <p style="margin-bottom:0">③ <strong>策略路径</strong>：如何培养下一代</p>
+        </div>
+
+        <p>这三个议题不仅是教育议题，也是每一个个体在AI浪潮中重新定位自己的议题。教育的问题，本质上是「人的价值」的问题。</p>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>七娘的答案：审美+领导力</h2>
+        </div>
+        <p>七娘是本期最受关注的声音。她给出的AI时代核心能力是：<span class="hl-yellow">审美 + 领导力</span>。</p>
+
+        <p>她的逻辑起点是：<strong>人和AI最大的不同在于「独特性」</strong>——价值观和审美是独特性的核心。AI可以模仿任何人的风格，但它没有真正的品味，没有真正的立场，没有真正的坚持。</p>
+
+        <h3>审美如何培养</h3>
+        <p>七娘提出了「品味模型」的概念：<span class="hl-yellow">所思所行所想所悟</span>——体验积累，花时间感受，反复打磨自己的判断力。审美不是天赋，而是一种可以刻意培养的能力。</p>
+
+        <p>具体路径：多读经典，经过时间考验的书；把「体验」当作审美的基础原材料；不断问自己「我想成为什么样的人」。</p>
+
+        <div class="quote">
+            "人和AI最大的不同，是人的独特之处。价值观&审美能力。审美怎么提升：一个人的人文素养。想成为什么样的人。品味模型——所思所行所想所悟，花时间积累。人的审美主要在于体验。多读经典。经过时间考验的书。指挥它，但是又是以你为主（以我为主，为我所用）"
+            <div class="quote-author">— 七娘，教育领域实践者</div>
+        </div>
+
+        <p>七娘把这个关系概括得非常清晰：<span class="hl-yellow">你是主体，AI是工具</span>。这个顺序不能颠倒。</p>
+
+        <div class="golden-quote">
+            AI时代，人最有价值的东西，不是你知道多少，而是你品味什么、相信什么、坚持什么。
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>教育重构：策略行动与路径选择</h2>
+        </div>
+        <p>传统教育失效了吗？嘉宾们的共同答案是：<strong>不是失效，而是需要补课</strong>。传统教育缺失的那些东西，在AI时代反而变得更重要了。</p>
+
+        <h3>向阳的观点</h3>
+        <p><span class="hl-yellow">审辨能力</span>（识别信息真假的能力）和<span class="hl-yellow">想象力</span>是AI时代最重要的两项能力。AI会产生大量内容，其中不乏幻觉与错误。一个人能不能识别AI输出的质量，辨别信息的真伪，是核心竞争力。</p>
+
+        <h3>金刚的观点</h3>
+        <p>金刚提出「<span class="hl-yellow">AI领导力</span>」的概念——能指挥AI、管理AI输出、在AI时代做真正的决策者。这不只是技术能力，而是一种<strong>思维方式</strong>：你是在驾驭AI，还是被AI驾驭？</p>
+
+        <h3>实践路径</h3>
+        <p>从小让孩子与AI「玩耍」，在探索中培养正确的人机关系。不要把AI当成作弊工具，而是当成一个需要管理和指挥的协作者。</p>
+
+        <div class="data-block" data-coord="三人洞见">
+            <p><strong>三位嘉宾的核心能力框架</strong></p>
+            <p>七娘 → <strong>审美 + 领导力</strong>（独特性是人的护城河）</p>
+            <p>向阳 → <strong>审辨能力 + 想象力</strong>（识别真伪 + 超越框架）</p>
+            <p style="margin-bottom:0">金刚 → <strong>AI领导力 + 思维方式</strong>（驾驭AI，做决策者）</p>
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>育儿心法：在AI时代做父母</h2>
+        </div>
+        <p>讨论转向了一个更私人的维度：作为父母，面对AI时代，我们最大的担忧是什么？</p>
+
+        <p>最高频出现的担心是：<span class="hl-yellow">孩子会不会在情感上依赖AI？</span>——情感寄托、拟人化关系、把AI当成比父母更好的倾听者。这是一个真实且值得认真对待的风险。</p>
+
+        <h3>祥叔的三步建议</h3>
+        <p>祥叔给出了一个处理人机关系的顺序框架：<strong>先理解它，再指挥它，再怀疑它</strong>。这个顺序很重要。很多人跳过了「理解」直接去用，或者跳过了「怀疑」而盲目信任。</p>
+
+        <p>「理解它」意味着知道AI是怎么工作的，它的边界在哪里。「指挥它」意味着建立主体性，你在掌控。「怀疑它」意味着保持批判性思维，不把AI的输出当作真理。</p>
+
+        <div class="quote">
+            "拟人化的情感影响——理解它，指挥它，怀疑它。这不只是对孩子的建议，也是对我们所有人的建议。"
+            <div class="quote-author">— 祥叔，AI探索者</div>
+        </div>
+
+        <p>AI的「情感性影响」风险：如果孩子开始把AI当成情感依靠，这是需要家长主动介入引导的信号。不是禁止，而是陪伴孩子建立健康的人机关系边界。</p>
+    </section>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>AI是促进公平还是加剧鸿沟？</h2>
+        </div>
+        <p>本期最后一个辩题：AI在教育领域，是公平化力量，还是加剧分层？</p>
+
+        <p>表面上看，AI让优质教育资源的获取门槛大幅降低——任何一个有网络的孩子，都可以用AI辅导自己学习。这是公平化的力量。</p>
+
+        <p>但另一面同样真实：<span class="hl-yellow">主动拥抱AI的个体，获得的是指数级的能力放大</span>；被动等待的群体，鸿沟会继续加大，甚至加速加大。</p>
+
+        <h3>结论性观点</h3>
+        <p>AI对教育公平的影响，最终取决于态度和行动。不是等待教育系统改变，而是<strong>每个家庭、每个个体自己先动起来</strong>。系统的改变总是滞后的，个人的行动可以先行。</p>
+
+        <div class="golden-quote">
+            AI对教育公平的影响，取决于谁主动拥抱它。等待的代价，比行动的代价高得多。
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">10</span>
+        </div>
+        <ul>
+            <li><span class="label">核心能力</span>七娘：AI时代最有价值的是审美+领导力——这两件事AI无法复制</li>
+            <li><span class="label">品味</span>品味模型：所思所行所想所悟——体验积累，读经典，发展独特的美学判断</li>
+            <li><span class="label">原则</span>以我为主，为我所用——人是主体，AI是工具，这个顺序不能颠倒</li>
+            <li><span class="label">向阳</span>审辨能力+想象力：识别信息真假的能力和超越现有框架的能力</li>
+            <li><span class="label">金刚</span>AI领导力：能指挥AI、管理AI输出、在AI时代做真正的决策者</li>
+            <li><span class="label">育儿</span>先理解它，再指挥它，再怀疑它——培养健康人机关系的三步骤</li>
+            <li><span class="label">风险</span>警惕AI的情感替代风险：拟人化的情感依赖是需要主动引导的信号</li>
+            <li><span class="label">公平</span>AI对教育公平的影响由行动决定，等待的代价远高于行动的代价</li>
+            <li><span class="label">传统教育</span>传统教育不是失效，而是需要补课：批判性思维和创造性想象力</li>
+            <li><span class="label">行动</span>每个家庭、每个个体自己先动起来——不要等待系统改变</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第七期：教育+AI 聊不尽的教育」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-007<br>
+            2025-12-06<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
