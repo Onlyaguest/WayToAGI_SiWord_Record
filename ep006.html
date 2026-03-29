@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP-006 · AI 与未来生活·续：科幻、共鸣与普通人的路 | 未来硅世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F0EDE8;
+            --grid: rgba(45,41,38,0.07);
+            --ink: #2D2926;
+            --pink: #E91E63;
+            --green: #B8D8BE;
+            --yellow: #FFF200;
+            --dim: rgba(45,41,38,0.45);
+            --border: rgba(45,41,38,0.14);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 1rem;
+            line-height: 1.9;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-back {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dim);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .nav-back:hover { color: var(--pink); }
+        .ep-badge {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 4px 12px;
+        }
+        .hero {
+            padding: 52px 0 40px;
+            border-bottom: 2px solid var(--ink);
+            position: relative;
+        }
+        .hero-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+        .hero-title .hl {
+            background: var(--yellow);
+            padding: 0 4px;
+            display: inline;
+        }
+        .hero-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            text-transform: uppercase;
+        }
+        .hero-meta span { color: var(--pink); }
+        .hero-rule {
+            position: absolute;
+            right: 0; top: 52px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            writing-mode: vertical-rl;
+        }
+        section { margin: 50px 0; }
+        .sec-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .sec-coord {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--pink);
+            letter-spacing: 2px;
+            border: 1px solid var(--pink);
+            padding: 2px 7px;
+            white-space: nowrap;
+        }
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.3px;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            margin: 28px 0 10px;
+            color: var(--ink);
+        }
+        p { margin-bottom: 16px; font-weight: 300; }
+        .quote {
+            border-left: 3px solid var(--ink);
+            padding: 16px 22px;
+            background: rgba(45,41,38,0.04);
+            margin: 28px 0;
+            font-style: italic;
+            font-size: 1.02rem;
+            position: relative;
+        }
+        .quote::before {
+            content: 'Q-REC';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--dim);
+            position: absolute;
+            top: -10px; left: 22px;
+            background: var(--bg);
+            padding: 0 4px;
+        }
+        .quote-author {
+            font-style: normal;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--dim);
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .golden-quote {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 32px 36px;
+            margin: 36px 0;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            position: relative;
+        }
+        .golden-quote::before {
+            content: 'KEY-INSIGHT';
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,242,0,0.4);
+            display: block;
+            margin-bottom: 10px;
+        }
+        .golden-quote::after {
+            content: 'Δ';
+            position: absolute;
+            bottom: 16px; right: 24px;
+            font-size: 20px;
+            color: var(--pink);
+            opacity: 0.6;
+        }
+        .takeaways {
+            border: 1.5px solid var(--ink);
+            padding: 0;
+            margin: 44px 0;
+            position: relative;
+        }
+        .takeaways-header {
+            background: var(--ink);
+            color: var(--yellow);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .takeaways-header span {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .takeaways-header .count {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pink);
+        }
+        .takeaways ul { list-style: none; }
+        .takeaways li {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            font-weight: 300;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: baseline;
+        }
+        .takeaways li:last-child { border-bottom: none; }
+        .takeaways li .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--pink);
+            padding: 3px 7px;
+            white-space: nowrap;
+        }
+        .hl-yellow {
+            background: var(--yellow);
+            padding: 1px 5px;
+            font-weight: 700;
+        }
+        .data-block {
+            background: var(--green);
+            padding: 20px 24px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .data-block::before {
+            content: attr(data-coord);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(45,41,38,0.5);
+            position: absolute;
+            top: -10px; left: 16px;
+            background: var(--green);
+            padding: 0 4px;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 70px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-left {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            color: var(--dim);
+            letter-spacing: 1.5px;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+        .footer-left a { color: var(--ink); }
+        .footer-stamp {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 8px;
+            color: var(--border);
+            letter-spacing: 3px;
+            text-align: right;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero { animation: slideIn 0.5s ease both; }
+        section { animation: slideIn 0.5s ease both; }
+        section:nth-of-type(1) { animation-delay: 0.05s; }
+        section:nth-of-type(2) { animation-delay: 0.1s; }
+        section:nth-of-type(3) { animation-delay: 0.15s; }
+        @media (max-width: 600px) {
+            .hero-title { font-size: 2rem; }
+            .golden-quote { padding: 22px 20px; font-size: 1.1rem; }
+            .takeaways li { grid-template-columns: 1fr; gap: 6px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <nav class="nav-bar">
+        <a class="nav-back" href="index.html">← INDEX / ALL-EPISODES</a>
+        <span class="ep-badge">EP-006</span>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-coord">WLGSJ / SEC-006 / 2025-11-22 / TRANSCRIPT→STRUCTURED</div>
+        <h1 class="hero-title">AI 与未来生活·续：<br><span class="hl">科幻</span>、共鸣<br>与普通人的路</h1>
+        <div class="hero-meta-row">
+            <div class="hero-meta">嘉宾 <span>祥叔</span> · 续前期</div>
+            <div class="hero-meta">主持 <span>向阳乔木 / 姚金刚 / 尼克西 / 元子</span></div>
+        </div>
+        <div class="hero-rule">未来硅世界第6期 · 2025.11.22</div>
+    </div>
+
+    <!-- SEC-01 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-01</span>
+            <h2>AI 对世界观的冲击</h2>
+        </div>
+        <p>这是Vol5的续集：祥叔说，上期讨论了"怎么做"，这期想聊"为什么"和"我们要去哪里"。从方法论走向世界观，是一次必要的深入。</p>
+
+        <p>AI不只改变工作方式，它改变了人对<span class="hl-yellow">"什么是真实"</span>的认知。当一个系统可以生成比你更连贯的思想、比你更有逻辑的论述，你开始重新审视"思考"这件事究竟是什么。</p>
+
+        <div class="quote">
+            "当AI能比我更了解我时，我必须重新定义'我'是什么。"
+            <div class="quote-author">— 祥叔</div>
+        </div>
+
+        <div class="golden-quote">
+            AI时代最深刻的冲击不是失业焦虑，而是身份焦虑——我到底是谁？
+        </div>
+    </section>
+
+    <!-- SEC-02 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-02</span>
+            <h2>AI 创作与人的创作：边界在哪里？</h2>
+        </div>
+        <p>一个核心辩题：AI生成的内容，算不算"创作"？这个问题没有标准答案，但讨论本身很有价值——它逼着我们重新定义"创作"这个词。</p>
+
+        <p>祥叔的观点：创作的本质是表达，表达的本质是<span class="hl-yellow">有话想说</span>——AI没有"有话想说"。它可以生成无数符合逻辑的文本，但每一句话背后都没有一个"我想说这件事"的主体。</p>
+
+        <h3>但更重要的问题</h3>
+        <p>观众/读者是否在乎作者是人还是AI？这个问题更重要也更复杂。如果读者不在乎，那"有话想说"还是创作的本质吗？这是一个没有简单答案的开放问题。</p>
+
+        <div class="data-block" data-coord="DISCUSSION-FRAMEWORK">
+            <p><strong>本期讨论框架</strong></p>
+            <p>AI创作 vs 人类创作 · 科幻与现实的映射</p>
+            <p style="margin-bottom:0">普通人学AI的路径 · 对未来AI社会的期待</p>
+        </div>
+    </section>
+
+    <!-- SEC-03 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-03</span>
+            <h2>科幻作品里的 AI：预言还是警示？</h2>
+        </div>
+        <p>本期穿插了对科幻作品的讨论——从《Her》到《西部世界》，科幻是如何预判AI时代的？答案往往是：科幻预言了感受，而不是技术细节。</p>
+
+        <p>祥叔分享了他读科幻的体验：好的科幻不是预测技术，而是探讨<span class="hl-yellow">"技术成真后，人类如何面对自己"</span>。《Her》不是关于AI语音助手的故事，它是关于孤独和依赖的故事，只是借了AI的壳。</p>
+
+        <div class="quote">
+            "科幻最有价值的不是那些后来变成现实的技术想象，而是那些描写人类如何回应这些技术的部分。"
+            <div class="quote-author">— 祥叔</div>
+        </div>
+    </section>
+
+    <!-- SEC-04 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-04</span>
+            <h2>普通人学习 AI 的真实路径</h2>
+        </div>
+        <p>不是每个人都需要学会提示词工程——入门门槛因目标而异。一个想用AI写周报的人，和一个想用AI开发产品的人，需要的完全不同。</p>
+
+        <p>最有效的起点：<span class="hl-yellow">找到一个你有真实需求的场景，用AI解决它</span>。不要从"我要学AI"开始，要从"我有一个具体的问题需要解决"开始。这个顺序的差别，决定了你能走多远。</p>
+
+        <h3>祥叔的实用建议</h3>
+        <p>从"AI聊天伴侣"开始，到"AI工作伙伴"，循序渐进。第一阶段不要有压力，就是聊天、探索、感受——在这个过程中你会自然找到真正有价值的场景。</p>
+
+        <div class="golden-quote">
+            普通人学AI的最大误区是想学"AI"，而不是想解决某个具体问题。从问题出发，不要从工具出发。
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS -->
+    <div class="takeaways">
+        <div class="takeaways-header">
+            <span>CORE-INSIGHTS / 核心干货</span>
+            <span class="count">9</span>
+        </div>
+        <ul>
+            <li><span class="label">冲击</span>AI时代最深刻的挑战不是失业焦虑，而是身份焦虑——"我到底是谁？"</li>
+            <li><span class="label">创作</span>创作的本质是"有话想说"——AI没有这个，但这件事正变得越来越复杂</li>
+            <li><span class="label">科幻</span>好的科幻不预测技术，而是探讨技术成真后人类如何面对自己</li>
+            <li><span class="label">路径</span>普通人学AI最大误区：学"AI"而不是学"用AI解决某个具体问题"</li>
+            <li><span class="label">入口</span>最有效的AI学习入口：从一个你有真实需求的场景开始</li>
+            <li><span class="label">社会</span>AI未来愿景：AI承担重复劳动，人类专注创造和连接</li>
+            <li><span class="label">风险</span>真正的风险：AI加剧权力集中和信息不平等</li>
+            <li><span class="label">乐观</span>乐观是一种选择——选择主动参与塑造未来，而非被动等待</li>
+            <li><span class="label">行动</span>你期待什么样的AI社会，你就去建设它——这是每个人的责任</li>
+        </ul>
+    </div>
+
+    <!-- SEC-05 -->
+    <section>
+        <div class="sec-header">
+            <span class="sec-coord">SEC-05</span>
+            <h2>我们期待什么样的 AI 社会？</h2>
+        </div>
+        <p>主持团的未来想象：一个AI承担重复劳动、人类专注创造和连接的社会。这不是乌托邦，而是一个值得去努力的方向——哪怕它最终的样子和我们想象的不一样。</p>
+
+        <p>担忧：AI加剧<span class="hl-yellow">权力集中和信息不平等</span>的风险。技术从来不是中立的，它会被拥有它的人所塑造。这是我们需要在今天就开始讨论的问题。</p>
+
+        <h3>元子总结</h3>
+        <p>乐观是一种选择——选择主动参与和塑造，而不是被动等待结果。不是盲目乐观，而是"我知道问题存在，但我选择相信我的行动有意义"。</p>
+
+        <div class="golden-quote">
+            对未来AI社会的期待，是我们今天行动的起点。你期待什么，你就去建设什么。
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="footer-left">
+            本文基于「未来硅世界第六期：AI与未来生活·续」整理<br>
+            原文：<a href="https://waytoagi.feishu.cn">waytoagi.feishu.cn</a><br>
+            模板 by WaytoAGI AJ
+        </div>
+        <div class="footer-stamp">
+            EP-006<br>
+            2025-11-22<br>
+            WLGSJ-TONXUE
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
